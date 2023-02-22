@@ -1,8 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-
-
-BOOLEAN_CHOICES = ((True, "Yes"), (False, "No"))
+from yourconstantclass import BOOLEAN_CHOICES
 
 
 def validate_file_size(value):
@@ -70,6 +68,20 @@ class FileWithAlt(TimeStampMixin):
     class Meta:
         verbose_name = "File"
         verbose_name_plural = "Files"
+        ordering = ('-created_at', )
+
+    def __str__(self):
+        return str(self.file)
+
+
+class ImageWithAlt(TimeStampMixin):
+    file = models.ImageField(help_text="Image field",
+                             validators=[validate_file_size])
+    alt = models.TextField(help_text="Alternate description of image")
+
+    class Meta:
+        verbose_name = "Image"
+        verbose_name_plural = "Images"
         ordering = ('-created_at', )
 
     def __str__(self):
